@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "531489161922",
+    "project_id": "instagram-a524c",
+    "storage_bucket": "instagram-a524c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:531489161922:android:98189dc93d0310ab2b315b",
+        "android_client_info": {
+          "package_name": "com.binduhait.instagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "531489161922-kdfga8kil770outspnd9vs87ev7qt8b5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDznjk5YI9p6slfYaP8cFgCOUmwAciUhVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "531489161922-kdfga8kil770outspnd9vs87ev7qt8b5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
