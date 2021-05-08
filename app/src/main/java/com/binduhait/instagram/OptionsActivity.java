@@ -22,12 +22,14 @@ public class OptionsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Options");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
+
         logout = findViewById(R.id.logout);
 
         logout.setOnClickListener(new View.OnClickListener() {

@@ -73,12 +73,13 @@
             android:src="@drawable/placeholder"
             android:id="@+id/image_added"/>
 
-        <EditText
+        <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:hint="Description..."
-            android:background="@drawable/edittext_background"
+            app:socialFlags="hashtag|mention"
+            app:hashtagColor="@color/colorPrimary"
             android:padding="10dp"
             android:id="@+id/description"
             android:maxLines="5"/>

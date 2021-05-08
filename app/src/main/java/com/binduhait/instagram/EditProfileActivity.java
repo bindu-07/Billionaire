@@ -38,9 +38,12 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class EditProfileActivity extends AppCompatActivity {
 
-    ImageView close, image_profile;
+    ImageView close;
+    CircleImageView image_profile;
     TextView save, tv_change;
     MaterialEditText fullname, username, bio;
 
@@ -105,7 +108,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 CropImage.activity()
                         .setAspectRatio(1,1)
-//                        .setCropShape(CropImageView.CropShape.OVAL)
+                        .setCropShape(CropImageView.CropShape.OVAL)
                         .start(EditProfileActivity.this);
             }
         });
@@ -115,7 +118,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 CropImage.activity()
                         .setAspectRatio(1,1)
-//                        .setCropShape(CropImageView.CropShape.OVAL)
+                        .setCropShape(CropImageView.CropShape.OVAL)
                         .start(EditProfileActivity.this);
             }
         });
@@ -173,7 +176,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         pd.dismiss();
 
                     } else {
-                        Toast.makeText(EditProfileActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditProfileActivity.this, "Upload Failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -200,7 +203,7 @@ public class EditProfileActivity extends AppCompatActivity {
             uploadImage();
 
         } else {
-            Toast.makeText(this, "Something gone wrong!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show();
         }
     }
 }

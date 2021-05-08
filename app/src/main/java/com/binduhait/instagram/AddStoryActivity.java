@@ -42,7 +42,7 @@ public class AddStoryActivity extends AppCompatActivity {
         storageRef = FirebaseStorage.getInstance().getReference("story");
 
         CropImage.activity()
-                .setAspectRatio(9,16)
+//                .setAspectRatio(9,16)
                 .start(AddStoryActivity.this);
 
     }

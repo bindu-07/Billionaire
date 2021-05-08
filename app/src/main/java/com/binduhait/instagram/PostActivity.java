@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,15 +21,22 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.hendraanggrian.appcompat.socialview.Hashtag;
+import com.hendraanggrian.appcompat.widget.HashtagArrayAdapter;
+import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -39,7 +47,7 @@ public class PostActivity extends AppCompatActivity {
 
     ImageView close, image_added;
     TextView post;
-    EditText description;
+    SocialAutoCompleteTextView description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +78,7 @@ public class PostActivity extends AppCompatActivity {
 
 
         CropImage.activity()
-                .setAspectRatio(1,1)
+//                .setAspectRatio(1,1)
                 .start(PostActivity.this);
     }
 
@@ -116,8 +124,20 @@ public class PostActivity extends AppCompatActivity {
 
                         reference.child(postid).setValue(hashMap);
 
-                        pd.dismiss();
+                        DatabaseReference mHashTagRef = FirebaseDatabase.getInstance().getReference().child("HashTags");
+                        List<String> hashTags = description.getHashtags();
+                        if (!hashTags.isEmpty()){
+                            for (String tag : hashTags){
+                                hashMap.clear();
 
+                                hashMap.put("tag" , tag.toLowerCase());
+                                hashMap.put("postid" , postid);
+
+                                mHashTagRef.child(tag.toLowerCase()).child(postid).setValue(hashMap);
+                            }
+                        }
+
+                        pd.dismiss();
                         startActivity(new Intent(PostActivity.this, MainActivity.class));
                         finish();
 
@@ -152,5 +172,27 @@ public class PostActivity extends AppCompatActivity {
             startActivity(new Intent(PostActivity.this, MainActivity.class));
             finish();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final ArrayAdapter<Hashtag> hashtagAdapter = new HashtagArrayAdapter<>(getApplicationContext());
+
+        FirebaseDatabase.getInstance().getReference().child("HashTags").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    hashtagAdapter.add(new Hashtag(snapshot.getKey() , (int) snapshot.getChildrenCount()));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        description.setHashtagAdapter(hashtagAdapter);
     }
 }

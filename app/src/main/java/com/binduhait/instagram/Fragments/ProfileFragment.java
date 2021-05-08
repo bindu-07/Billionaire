@@ -40,10 +40,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class ProfileFragment extends Fragment {
 
-    ImageView image_profile, options;
+    ImageView options;
+    CircleImageView image_profile;
     TextView posts, followers, following, fullname, bio, username;
     Button edit_profile;
 
@@ -71,6 +74,7 @@ public class ProfileFragment extends Fragment {
 
         SharedPreferences prefs = getContext().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         profileid = prefs.getString("profileid", "none");
+
 
         image_profile = view.findViewById(R.id.image_profile);
         posts = view.findViewById(R.id.posts);
@@ -142,6 +146,8 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+
+
 
         options.setOnClickListener(new View.OnClickListener() {
             @Override
