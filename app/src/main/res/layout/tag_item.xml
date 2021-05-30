@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="#tag"
+            android:text="#has_tag"
+            android:textSize="18sp"
             android:textColor="@color/design_default_color_primary_dark"
             android:layout_marginBottom="5dp"
             android:textStyle="bold" />
@@ -37,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
+            android:textSize="14sp"
             android:text="123 posts" />
 
     </LinearLayout>

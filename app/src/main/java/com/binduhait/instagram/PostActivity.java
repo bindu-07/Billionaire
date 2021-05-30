@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.binduhait.instagram.Model.Post;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,8 +36,14 @@ import com.hendraanggrian.appcompat.widget.HashtagArrayAdapter;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class PostActivity extends AppCompatActivity {
 
@@ -46,7 +53,7 @@ public class PostActivity extends AppCompatActivity {
     StorageReference storageRef;
 
     ImageView close, image_added;
-    TextView post;
+    TextView post,createdAt;
     SocialAutoCompleteTextView description;
 
     @Override
@@ -58,8 +65,10 @@ public class PostActivity extends AppCompatActivity {
         image_added = findViewById(R.id.image_added);
         post = findViewById(R.id.post);
         description = findViewById(R.id.description);
+        createdAt = findViewById(R.id.createdAt);
 
         storageRef = FirebaseStorage.getInstance().getReference("posts");
+
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +82,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 uploadImage_10();
+
             }
         });
 
@@ -121,7 +131,7 @@ public class PostActivity extends AppCompatActivity {
                         hashMap.put("postimage", miUrlOk);
                         hashMap.put("description", description.getText().toString());
                         hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-
+                        hashMap.put("createdAt", getCurrentDateTime());
                         reference.child(postid).setValue(hashMap);
 
                         DatabaseReference mHashTagRef = FirebaseDatabase.getInstance().getReference().child("HashTags");
@@ -195,4 +205,12 @@ public class PostActivity extends AppCompatActivity {
 
         description.setHashtagAdapter(hashtagAdapter);
     }
+
+    private String getCurrentDateTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm aa, dd-MMM-YY");
+        Calendar c = Calendar.getInstance();
+        String time = sdf.format(c.getTime());
+        return time;
+    }
+
 }

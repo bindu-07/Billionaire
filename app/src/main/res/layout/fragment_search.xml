@@ -17,48 +17,87 @@
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_search" />
-
-            <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
-                android:id="@+id/search_bar"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:background="@android:color/transparent"
-                android:hint="Search..." />
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/search_text"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
+                <ImageView
+                    android:id="@+id/ab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/ic_search" />
+
+                <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Search..."
+                    android:maxLines="1" />
+            </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/last_bar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/bar"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginRight="-5dp"
+        android:background="@drawable/button_black"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/profile"
+            style="?android:attr/buttonBarButtonStyle"
+            android:textColor="@color/twitterBlue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Profiles" />
+
+        <TextView
+            android:id="@+id/hastag"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/twitterBlue"
+            android:text="HasTags" />
+
+    </LinearLayout>
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/bar">
+        android:layout_below="@id/last_bar">
 
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/bar" />
+                android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/recycler_view_tags"
-                android:layout_below="@id/recycler_view"
-                android:layout_marginTop="5dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
 
-        </LinearLayout>
+        </RelativeLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

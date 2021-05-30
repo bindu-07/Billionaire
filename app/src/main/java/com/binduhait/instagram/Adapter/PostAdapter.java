@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.binduhait.instagram.Fragments.ProfileFragment;
 import com.binduhait.instagram.Model.Post;
 import com.binduhait.instagram.Model.User;
 import com.binduhait.instagram.R;
+import com.binduhait.instagram.SquareImageView;
+import com.binduhait.instagram.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,8 +42,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolder> {
 
@@ -49,9 +58,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
     private FirebaseUser firebaseUser;
 
-    public PostAdapter(Context context, List<Post> posts){
+    public PostAdapter(Context context, List<Post> posts) {
         mContext = context;
         mPosts = posts;
+
     }
 
     @NonNull
@@ -65,24 +75,39 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     public void onBindViewHolder(@NonNull final PostAdapter.ImageViewHolder holder, final int position) {
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
         final Post post = mPosts.get(position);
+
 
         Glide.with(mContext).load(post.getPostimage())
                 .apply(new RequestOptions().placeholder(R.drawable.placeholder))
                 .into(holder.post_image);
 
-        if (post.getDescription().equals("")){
+        if (post.getDescription().equals("")) {
             holder.description.setVisibility(View.GONE);
         } else {
             holder.description.setVisibility(View.VISIBLE);
             holder.description.setText(post.getDescription());
         }
 
+
+        holder.createdAt.setVisibility(View.VISIBLE);
+        holder.createdAt.setText("Posted on " + post.getCreatedAt());
+
+
         publisherInfo(holder.image_profile, holder.username, holder.publisher, post.getPublisher());
+
         isLiked(post.getPostid(), holder.like);
         isSaved(post.getPostid(), holder.save);
         nrLikes(holder.likes, post.getPostid());
         getCommetns(post.getPostid(), holder.comments);
+
+        //set the time it was posted
+//
+//        if(message.getTime()!=null)
+//            holder.timeTv.setText(message.getTime());
+//        else holder.timeTv.setVisibility(View.GONE);
+
 
         holder.like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,8 +126,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holder.save.getTag().equals("save")){
-                    Toast.makeText(mContext,"item saved",Toast.LENGTH_SHORT).show();
+                if (holder.save.getTag().equals("save")) {
+                    Toast.makeText(mContext, "item saved", Toast.LENGTH_SHORT).show();
                     FirebaseDatabase.getInstance().getReference().child("Saves").child(firebaseUser.getUid())
                             .child(post.getPostid()).setValue(true);
                 } else {
@@ -119,7 +144,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 editor.putString("profileid", post.getPublisher());
                 editor.apply();
 
-                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
             }
         });
@@ -131,7 +156,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 editor.putString("profileid", post.getPublisher());
                 editor.apply();
 
-                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
             }
         });
@@ -143,7 +168,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 editor.putString("profileid", post.getPublisher());
                 editor.apply();
 
-                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
             }
         });
@@ -175,7 +200,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 editor.putString("postid", post.getPostid());
                 editor.apply();
 
-                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PostDetailFragment()).commit();
             }
         });
@@ -197,7 +222,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()){
+                        switch (menuItem.getItemId()) {
                             case R.id.edit:
                                 editPost(post.getPostid());
                                 return true;
@@ -208,7 +233,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()){
+                                                if (task.isSuccessful()) {
                                                     deleteNotifications(id, firebaseUser.getUid());
                                                 }
                                             }
@@ -223,7 +248,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                     }
                 });
                 popupMenu.inflate(R.menu.post_menu);
-                if (!post.getPublisher().equals(firebaseUser.getUid())){
+                if (!post.getPublisher().equals(firebaseUser.getUid())) {
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(false);
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(false);
                 }
@@ -231,6 +256,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             }
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -240,7 +266,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image_profile, post_image, like, comment, save, more;
-        public TextView username, likes, publisher, description, comments;
+
+        public TextView username, likes, publisher, description, comments, createdAt;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
@@ -256,10 +283,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             description = itemView.findViewById(R.id.description);
             comments = itemView.findViewById(R.id.comments);
             more = itemView.findViewById(R.id.more);
+            createdAt = itemView.findViewById(R.id.createdAt);
+
+
         }
     }
 
-    private void addNotification(String userid, String postid){
+    private void addNotification(String userid, String postid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -271,13 +301,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         reference.push().setValue(hashMap);
     }
 
-    private void deleteNotifications(final String postid, String userid){
+    private void deleteNotifications(final String postid, String userid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    if (snapshot.child("postid").getValue().equals(postid)){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    if (snapshot.child("postid").getValue().equals(postid)) {
                         snapshot.getRef().removeValue()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -296,12 +326,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         });
     }
 
-    private void nrLikes(final TextView likes, String postId){
+    private void nrLikes(final TextView likes, String postId) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Likes").child(postId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                likes.setText(dataSnapshot.getChildrenCount()+" likes");
+                likes.setText(dataSnapshot.getChildrenCount() + " likes");
             }
 
             @Override
@@ -312,12 +342,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
     }
 
-    private void getCommetns(String postId, final TextView comments){
+
+    private void getCommetns(String postId, final TextView comments) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Comments").child(postId);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                comments.setText("View All "+dataSnapshot.getChildrenCount()+" Comments");
+                comments.setText("View All " + dataSnapshot.getChildrenCount() + " Comments");
             }
 
             @Override
@@ -327,7 +358,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         });
     }
 
-    private void publisherInfo(final ImageView image_profile, final TextView username, final TextView publisher, final String userid){
+    private void publisherInfo(final ImageView image_profile, final TextView username, final TextView publisher, final String userid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference()
                 .child("Users").child(userid);
 
@@ -338,6 +369,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 Glide.with(mContext).load(user.getImageurl()).into(image_profile);
                 username.setText(user.getUsername());
                 publisher.setText(user.getUsername());
+
+
             }
 
             @Override
@@ -347,7 +380,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         });
     }
 
-    private void isLiked(final String postid, final ImageView imageView){
+    private void isLiked(final String postid, final ImageView imageView) {
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -357,10 +390,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(firebaseUser.getUid()).exists()){
+                if (dataSnapshot.child(firebaseUser.getUid()).exists()) {
                     imageView.setImageResource(R.drawable.ic_liked);
                     imageView.setTag("liked");
-                } else{
+                } else {
                     imageView.setImageResource(R.drawable.ic_like);
                     imageView.setTag("like");
                 }
@@ -373,7 +406,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         });
     }
 
-    private void isSaved(final String postid, final ImageView imageView){
+    private void isSaved(final String postid, final ImageView imageView) {
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -382,10 +415,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(postid).exists()){
+                if (dataSnapshot.child(postid).exists()) {
                     imageView.setImageResource(R.drawable.ic_save_black);
                     imageView.setTag("saved");
-                } else{
+                } else {
                     imageView.setImageResource(R.drawable.ic_savee_black);
                     imageView.setTag("save");
                 }
@@ -398,7 +431,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         });
     }
 
-    private void editPost(final String postid){
+    private void editPost(final String postid) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
         alertDialog.setTitle("Edit Post");
 
@@ -433,7 +466,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         alertDialog.show();
     }
 
-    private void getText(String postid, final EditText editText){
+
+    private void getText(String postid, final EditText editText) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts")
                 .child(postid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -4,6 +4,10 @@
     package="com.binduhait.instagram">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -15,20 +19,38 @@
         android:theme="@style/AppTheme">
         <activity android:name=".StoryActivity"></activity>
         <activity android:name=".AddStoryActivity" />
-        <activity android:name=".OptionsActivity" />
-        <activity android:name=".FollowersActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".CommentsActivity" />
-        <activity android:name=".StartActivity">
+        <activity
+            android:name=".OptionsActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".FollowersActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".CommentsActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".StartActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".PostActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".RegisterActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleInstance" />
+        <activity
+            android:name=".PostActivity"
+            android:launchMode="singleInstance" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />

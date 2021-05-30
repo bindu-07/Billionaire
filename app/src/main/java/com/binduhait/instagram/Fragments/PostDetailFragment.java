@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.binduhait.instagram.Adapter.PostAdapter;
 import com.binduhait.instagram.MainActivity;
@@ -25,18 +27,26 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class PostDetailFragment extends Fragment {
 
     String postid;
+    public Post mPost;
 
     private RecyclerView recyclerView;
 
     private PostAdapter postAdapter;
     private List<Post> postList;
+    public ImageButton back;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,7 +57,7 @@ public class PostDetailFragment extends Fragment {
         SharedPreferences prefs = getContext().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
         postid = prefs.getString("postid", "none");
 
-
+//        back = view.findViewById(R.id.back);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -58,6 +68,14 @@ public class PostDetailFragment extends Fragment {
         recyclerView.setAdapter(postAdapter);
 
         readPost();
+//        setupWidgets();
+
+//        back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().finish();
+//            }
+//        });
 
         return view;
     }
@@ -82,4 +100,7 @@ public class PostDetailFragment extends Fragment {
             }
         });
     }
+
+
+
 }

@@ -11,7 +11,7 @@
 
     <item name="colorPrimary">@color/colorPrimary</item>
 
-    <item name="colorPrimaryDark">#FFFFFF</item>
+    <item name="colorPrimaryDark">@color/gray208</item>
 
     <item name="colorAccent">@color/colorAccent</item>
 

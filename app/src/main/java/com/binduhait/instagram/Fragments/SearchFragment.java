@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.binduhait.instagram.Adapter.TagAdapter;
 import com.binduhait.instagram.Adapter.UserAdapter;
@@ -45,6 +47,8 @@ public class SearchFragment extends Fragment {
 
     private SocialAutoCompleteTextView search_bar;
 
+    TextView profile,hastag;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,8 +73,31 @@ public class SearchFragment extends Fragment {
         tagAdapter = new TagAdapter(getContext() , mHashTags , mHashTagsCount);
         recyclerViewTags.setAdapter(tagAdapter);
 
+        profile = view.findViewById(R.id.profile);
+        hastag = view.findViewById(R.id.hastag);
+
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerViewTags.setVisibility(View.INVISIBLE);
+
         readUsers();
         readTags();
+
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerViewTags.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        hastag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.setVisibility(View.INVISIBLE);
+                recyclerViewTags.setVisibility(View.VISIBLE);
+            }
+        });
 
         search_bar.addTextChangedListener(new TextWatcher() {
             @Override

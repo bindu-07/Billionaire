@@ -5,12 +5,15 @@ public class Post {
     private String postimage;
     private String description;
     private String publisher;
+    private String createdAt ;
 
-    public Post(String postid, String postimage, String description, String publisher) {
+
+    public Post(String postid, String postimage, String description, String publisher, String createdAt) {
         this.postid = postid;
         this.postimage = postimage;
         this.description = description;
         this.publisher = publisher;
+        this.createdAt = createdAt;
     }
 
     public Post() {
@@ -47,4 +50,15 @@ public class Post {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
+
+    public String getCreatedAt(){
+        return createdAt;
+    }
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+
+
+
 }

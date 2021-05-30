@@ -14,7 +14,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:id="@+id/bar"
         android:layout_alignParentBottom="true">
 
@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/bottom_navigation"
             app:itemIconTint="@color/selector"
-            app:labelVisibilityMode="labeled"
+            app:itemIconSize="25dp"
+            app:labelVisibilityMode="unlabeled"
             app:menu="@menu/bottom_navigation"
             android:background="?android:attr/windowBackground"/>
 
