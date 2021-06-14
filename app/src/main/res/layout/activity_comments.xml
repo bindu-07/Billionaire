@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginStart="60dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginEnd="65dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             app:cardCornerRadius="40dp">
@@ -50,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="5dp"
                 android:layout_toStartOf="@id/post"
                 android:layout_toEndOf="@id/image_profile"
                 android:background="@android:color/transparent"
@@ -64,9 +64,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
             android:padding="10dp"
-            android:layout_marginEnd="5dp"
-            android:text="Post"
+            android:text="POST"
+            android:textSize="18sp"
             android:textColor="@color/colorPrimary"
             android:textStyle="bold" />
 

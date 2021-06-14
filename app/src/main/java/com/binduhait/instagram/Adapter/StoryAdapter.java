@@ -14,10 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.binduhait.instagram.AddStoryActivity;
+import com.binduhait.instagram.Model.Post;
 import com.binduhait.instagram.Model.Story;
 import com.binduhait.instagram.Model.User;
 import com.binduhait.instagram.R;
 import com.binduhait.instagram.StoryActivity;
+import com.binduhait.instagram.Utils;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -64,6 +66,12 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
             myStory(viewHolder.addstory_text, viewHolder.story_plus, false);
         }
 
+        //getTime(viewHolder,story.getCreateTime());
+
+
+//       viewHolder.createdTime.setVisibility(View.VISIBLE);
+//        viewHolder.createdTime.setText(story.getCreateTime());
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +95,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView story_photo, story_plus, story_photo_seen;
-        public TextView story_username, addstory_text;
+        public TextView story_username, addstory_text, createdTime;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,6 +105,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
             story_plus = itemView.findViewById(R.id.story_plus);
             addstory_text = itemView.findViewById(R.id.addstory_text);
             story_photo_seen = itemView.findViewById(R.id.story_photo_seen);
+            createdTime = itemView.findViewById(R.id.story_time);
         }
     }
 
@@ -108,6 +117,30 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
         return 1;
     }
 
+    private void getTime(final ViewHolder viewHolder, String userid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story").child(userid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Story story = dataSnapshot.getValue(Story.class);
+//                Glide.with(mContext).load(user.getImageurl()).into(viewHolder.story_photo);
+//                if (pos != 0) {
+//                    Glide.with(mContext).load(user.getImageurl()).into(viewHolder.story_photo_seen);
+//                    viewHolder.story_username.setText(user.getUsername());
+//
+//                }
+
+                viewHolder.createdTime.setText(story.getCreateTime());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
     private void userInfo(final ViewHolder viewHolder, String userid, final int pos){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -118,6 +151,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
                 if (pos != 0) {
                     Glide.with(mContext).load(user.getImageurl()).into(viewHolder.story_photo_seen);
                     viewHolder.story_username.setText(user.getUsername());
+
                 }
             }
 
@@ -138,6 +172,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder>{
                 long timecurrent = System.currentTimeMillis();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Story story = snapshot.getValue(Story.class);
+
                     if (timecurrent > story.getTimestart() && timecurrent < story.getTimeend()){
                         count++;
                     }

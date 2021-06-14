@@ -68,7 +68,7 @@ public class PostDetailFragment extends Fragment {
         recyclerView.setAdapter(postAdapter);
 
         readPost();
-//        setupWidgets();
+
 
 //        back.setOnClickListener(new View.OnClickListener() {
 //            @Override

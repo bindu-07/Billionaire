@@ -200,8 +200,10 @@ public class SearchFragment extends Fragment {
 
         for (String s : mHashTags) {
             if (s.toLowerCase().contains(text.toLowerCase())){
-                mSearchTags.add(s);
+
                 mSearchTagsCount.add(mHashTagsCount.get(mHashTags.indexOf(s)));
+                mSearchTags.add(s);
+
             }
         }
 

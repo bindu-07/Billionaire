@@ -51,6 +51,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         final Notification notification = mNotification.get(position);
 
         holder.text.setText(notification.getText());
+        holder.time.setText(notification.getTime());
 
         getUserInfo(holder.image_profile, holder.username, notification.getUserid());
 
@@ -94,7 +95,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView image_profile, post_image;
-        public TextView username, text;
+        public TextView username, text, time;
 
         public ImageViewHolder(View itemView) {
             super(itemView);
@@ -103,6 +104,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             post_image = itemView.findViewById(R.id.post_image);
             username = itemView.findViewById(R.id.username);
             text = itemView.findViewById(R.id.comment);
+            time = itemView.findViewById(R.id.notification_time);
+
         }
     }
 

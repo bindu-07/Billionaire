@@ -37,7 +37,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
     StoriesProgressView storiesProgressView;
     ImageView image, story_photo;
-    TextView story_username;
+    TextView story_username, createdTime;
 
     //
     LinearLayout r_seen;
@@ -47,7 +47,9 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
 
     List<String> images;
     List<String> storyids;
+
     String userid;
+//    String storyid;
 
     private View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         @Override
@@ -75,6 +77,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         image = findViewById(R.id.image);
         story_photo = findViewById(R.id.story_photo);
         story_username = findViewById(R.id.story_username);
+        createdTime = findViewById(R.id.story_time);
 
         //
         r_seen = findViewById(R.id.r_seen);
@@ -86,16 +89,21 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         //
 
         userid = getIntent().getStringExtra("userid");
+        //storyid = getIntent().getStringExtra("storyid");
 
         //
-        if (userid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+        if (userid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
             r_seen.setVisibility(View.VISIBLE);
             story_delete.setVisibility(View.VISIBLE);
         }
-        //
+
 
         getStories(userid);
         userInfo(userid);
+        //getTime(storyid);
+        Story story = new Story();
+        createdTime.setText(story.getCreateTime());
+
 
         View reverse = findViewById(R.id.reverse);
         reverse.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +144,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
                 reference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(StoryActivity.this, "Deleted!", Toast.LENGTH_SHORT).show();
                             finish();
                         }
@@ -190,7 +198,7 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         super.onResume();
     }
 
-    private void getStories(String userid){
+    private void getStories(String userid) {
         images = new ArrayList<>();
         storyids = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story")
@@ -200,12 +208,15 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
             public void onDataChange(DataSnapshot dataSnapshot) {
                 images.clear();
                 storyids.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Story story = snapshot.getValue(Story.class);
+                    //createdTime.setText(story.getCreateTime());
                     long timecurrent = System.currentTimeMillis();
                     if (timecurrent > story.getTimestart() && timecurrent < story.getTimeend()) {
                         images.add(story.getImageurl());
                         storyids.add(story.getStoryid());
+//                        time.add(story.getCreateTime());
+
                     }
                 }
 
@@ -228,13 +239,33 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
         });
     }
 
-    private void userInfo(String userid){
+    private void getTime(String storyid) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story")
+                .child(userid).child(storyid).child("createTime");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Story story = dataSnapshot.getValue(Story.class);
+                createdTime.setVisibility(View.VISIBLE);
+                createdTime.setText(story.getCreateTime());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    private void userInfo(String userid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users")
                 .child(userid);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+
                 Glide.with(getApplicationContext()).load(user.getImageurl()).into(story_photo);
                 story_username.setText(user.getUsername());
             }
@@ -247,18 +278,18 @@ public class StoryActivity extends AppCompatActivity implements StoriesProgressV
     }
 
     //
-    private void addView(String storyid){
+    private void addView(String storyid) {
         FirebaseDatabase.getInstance().getReference().child("Story").child(userid)
                 .child(storyid).child("views").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(true);
     }
 
-    private void seenNumber(String storyid){
+    private void seenNumber(String storyid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Story")
                 .child(userid).child(storyid).child("views");
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                seen_number.setText(""+dataSnapshot.getChildrenCount());
+                seen_number.setText("" + dataSnapshot.getChildrenCount());
             }
 
             @Override

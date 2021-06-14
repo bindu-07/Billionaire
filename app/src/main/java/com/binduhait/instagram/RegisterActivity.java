@@ -3,13 +3,17 @@ package com.binduhait.instagram;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -28,7 +33,10 @@ public class RegisterActivity extends AppCompatActivity {
     EditText username, fullname, email, password;
     Button register;
     TextView txt_login;
-
+    DatePickerDialog picker;
+    EditText eText;
+    private String genderClicked = "";
+    private String birthDate;
     FirebaseAuth auth;
     DatabaseReference reference;
     ProgressDialog pd;
@@ -44,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         register = findViewById(R.id.register);
         txt_login = findViewById(R.id.txt_login);
+        eText= findViewById(R.id.editText1);
+        eText.setInputType(InputType.TYPE_NULL);
 
         auth = FirebaseAuth.getInstance();
 
@@ -51,6 +61,69 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
+
+        eText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int day = cldr.get(Calendar.DAY_OF_MONTH);
+                int month = cldr.get(Calendar.MONTH);
+                int year = cldr.get(Calendar.YEAR);
+                // date picker dialog
+                picker = new DatePickerDialog(RegisterActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                                String month;
+                                switch (monthOfYear+1){
+                                    case 1:
+                                        month = "January";
+                                        break;
+                                    case 2:
+                                        month = "February";
+                                        break;
+                                    case 3:
+                                        month = "March";
+                                        break;
+                                    case 4:
+                                        month = "April";
+                                        break;
+                                    case 5:
+                                        month = "May";
+                                        break;
+                                    case 6:
+                                        month = "June";
+                                        break;
+                                    case 7:
+                                        month = "July";
+                                        break;
+                                    case 8:
+                                        month = "August";
+                                        break;
+                                    case 9:
+                                        month = "September";
+                                        break;
+                                    case 10:
+                                        month = "October";
+                                        break;
+                                    case 11:
+                                        month = "November";
+                                        break;
+                                    case 12:
+                                        month = "December";
+                                        break;
+                                    default:
+                                        throw new IllegalStateException("Unexpected value: " + monthOfYear + 1);
+                                }
+
+                                birthDate = dayOfMonth + " " + month + " " + year;
+                                eText.setText(birthDate);
+                            }
+                        }, year, month, day);
+                picker.show();
             }
         });
 
@@ -93,6 +166,12 @@ public class RegisterActivity extends AppCompatActivity {
                             map.put("fullname", fullname);
                             map.put("imageurl", "https://firebasestorage.googleapis.com/v0/b/instagramtest-fcbef.appspot.com/o/placeholder.png?alt=media&token=b09b809d-a5f8-499b-9563-5252262e9a49");
                             map.put("bio", "");
+                            map.put("birthday",birthDate);
+                            if (genderClicked != null){
+                                map.put("gender", genderClicked);
+                            }else {
+                                map.put("gender", "unknown");
+                            }
 
                             reference.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -112,4 +191,29 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void onRadioButtonClicked(View view) {
+
+        boolean checked = ((RadioButton) view).isChecked();
+
+        genderClicked = "";
+
+        switch (view.getId()) {
+            case R.id.male:
+                if (checked)
+
+                    genderClicked = "Male";
+
+                break;
+            case R.id.female:
+                if (checked)
+
+                    genderClicked = "Female";
+
+                break;
+        }
+    }
+
+
+
 }

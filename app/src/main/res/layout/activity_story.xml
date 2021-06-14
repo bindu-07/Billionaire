@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@null"
-        android:scaleType="centerCrop"
+        android:background="@color/colorBlack"
         tools:src="@drawable/placeholder" />
 
     <LinearLayout
@@ -46,8 +46,8 @@
         android:layout_margin="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:id="@+id/story_photo"/>
 
@@ -57,10 +57,22 @@
             android:text="username"
             android:textStyle="bold"
             android:textColor="#fff"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:id="@+id/story_username"
-            android:layout_centerVertical="true"
-            android:layout_margin="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/story_photo"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2:50 pm"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:layout_below="@+id/story_username"
+            android:id="@+id/story_time"
+            android:layout_marginStart="5dp"
+
             android:layout_toEndOf="@id/story_photo"/>
 
     </RelativeLayout>

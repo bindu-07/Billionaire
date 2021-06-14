@@ -3,20 +3,85 @@
     <!-- Base application theme. -->
 
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-    -<style parent="Theme.AppCompat.Light.NoActionBar" name="AppTheme">
-
-    <!-- Customize your theme here. -->
+        <!-- Customize your theme here. -->
 
 
-    <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/twitterBlue</item>
 
-    <item name="colorPrimaryDark">@color/gray208</item>
+        <item name="colorPrimaryDark">@color/colorWhitesmoke</item>
 
-    <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/twitterBlue</item>
 
-    <item name="android:colorForegroundInverse">@color/colorgGainsboro</item>
+        <item name="progressBarStyle">@color/twitterBlue</item>
 
-</style>
+
+        <item name="android:colorForegroundInverse">@color/colorgGainsboro</item>
+        <item name="android:colorForeground">@color/colorBlack</item>
+
+
+    </style>
+    <!-- Style for custom white radio button color -->
+
+
+    <style name="WhiteRadioButton" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <item name="colorControlNormal">@android:color/white</item>
+
+        <item name="colorControlActivated">@android:color/white</item>
+
+    </style>
+
+    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:dialogTheme">@style/MyDialogTheme</item>
+        <item name="android:datePickerStyle">@style/MyDatePicker</item>
+    </style>
+
+    <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:datePickerStyle">@style/MyDatePicker</item>
+    </style>
+
+    <style name="MyDatePicker" parent="@android:style/Widget.Material.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
 
 </resources>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

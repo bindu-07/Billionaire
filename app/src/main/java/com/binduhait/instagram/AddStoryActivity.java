@@ -8,7 +8,9 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -25,25 +27,37 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class AddStoryActivity extends AppCompatActivity {
 
     private Uri mImageUri;
-    String miUrlOk = "";
+    //String miUrlOk = "";
     private StorageTask uploadTask;
     StorageReference storageRef;
+    ImageView gallery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_story);
 
+        gallery = findViewById(R.id.gallery);
         storageRef = FirebaseStorage.getInstance().getReference("story");
 
-        CropImage.activity()
+
+        gallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity()
 //                .setAspectRatio(9,16)
-                .start(AddStoryActivity.this);
+                        .start(AddStoryActivity.this);
+            }
+        });
+
+
 
     }
 
@@ -75,7 +89,7 @@ public class AddStoryActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
-                        miUrlOk = downloadUri.toString();
+                        String miUrlOk = downloadUri.toString();
 
                         String myid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -91,6 +105,7 @@ public class AddStoryActivity extends AppCompatActivity {
                         hashMap.put("timeend", timeend);
                         hashMap.put("storyid", storyid);
                         hashMap.put("userid", myid);
+                        hashMap.put("createTime",getCurrentDateTime());
 
                         reference.child(storyid).setValue(hashMap);
 
@@ -130,5 +145,12 @@ public class AddStoryActivity extends AppCompatActivity {
             startActivity(new Intent(AddStoryActivity.this, MainActivity.class));
             finish();
         }
+    }
+
+    private String getCurrentDateTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+        Calendar c = Calendar.getInstance();
+        String time = sdf.format(c.getTime());
+        return time;
     }
 }

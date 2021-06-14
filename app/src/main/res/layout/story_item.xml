@@ -10,7 +10,7 @@
         android:layout_width="68dp"
         android:layout_height="68dp"
         app:civ_border_color="#f23b5a"
-
+        app:civ_border_overlay="false"
         app:civ_border_width="4dp"
         android:layout_gravity="center"
         android:src="@drawable/placeholder"
@@ -22,6 +22,7 @@
         android:layout_height="68dp"
         app:civ_border_color="#afafaf"
         app:civ_border_width="4dp"
+        app:civ_border_overlay="false"
         android:visibility="gone"
         android:layout_gravity="center"
         android:src="@drawable/placeholder"

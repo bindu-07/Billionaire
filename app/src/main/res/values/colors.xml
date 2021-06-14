@@ -14,7 +14,10 @@
 
     <color name="colorgGainsboro">#929292</color>
 
+    <color name="colorPrimaryLight">#C5CAE9</color>
+
     <color name="white">#fff</color>
+    <color name="colorWhitesmoke">#E8ECEC</color>
 
 
 

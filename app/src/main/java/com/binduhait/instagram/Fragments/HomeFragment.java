@@ -1,5 +1,6 @@
 package com.binduhait.instagram.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,12 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.binduhait.instagram.Adapter.PostAdapter;
 import com.binduhait.instagram.Adapter.StoryAdapter;
+import com.binduhait.instagram.MainActivity;
 import com.binduhait.instagram.Model.Post;
 import com.binduhait.instagram.Model.Story;
+import com.binduhait.instagram.Model.User;
+import com.binduhait.instagram.PostActivity;
 import com.binduhait.instagram.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,9 +41,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView_story;
     private StoryAdapter storyAdapter;
     private List<Story> storyList;
-
+    ImageView plus,logo;
     private List<String> followingList;
-
+    View viewe;
     ProgressBar progress_circular;
 
     @Override
@@ -64,6 +69,20 @@ public class HomeFragment extends Fragment {
         storyList = new ArrayList<>();
         storyAdapter = new StoryAdapter(getContext(), storyList);
         recyclerView_story.setAdapter(storyAdapter);
+
+        plus = view.findViewById(R.id.plus);
+        logo = view.findViewById(R.id.logo);
+        viewe = view.findViewById(R.id.view);
+        //logo.setVisibility(View.VISIBLE);
+
+
+        plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), PostActivity.class);
+                startActivity(intent);
+            }
+        });
 
         progress_circular = view.findViewById(R.id.progress_circular);
 
@@ -115,6 +134,7 @@ public class HomeFragment extends Fragment {
 
                 postAdapter.notifyDataSetChanged();
                 progress_circular.setVisibility(View.GONE);
+                viewe.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -129,10 +149,12 @@ public class HomeFragment extends Fragment {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+
                 long timecurrent = System.currentTimeMillis();
                 storyList.clear();
                 storyList.add(new Story("", 0, 0, "",
-                        FirebaseAuth.getInstance().getCurrentUser().getUid()));
+                        FirebaseAuth.getInstance().getCurrentUser().getUid(),""));
                 for (String id : followingList) {
                     int countStory = 0;
                     Story story = null;

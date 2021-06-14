@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -41,6 +42,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hendraanggrian.appcompat.widget.SocialTextView;
+import com.hendraanggrian.appcompat.widget.SocialView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,7 +95,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
 
         holder.createdAt.setVisibility(View.VISIBLE);
-        holder.createdAt.setText("Posted on " + post.getCreatedAt());
+        holder.createdAt.setText("Post on " + post.getCreatedAt());
 
 
         publisherInfo(holder.image_profile, holder.username, holder.publisher, post.getPublisher());
@@ -107,6 +110,37 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 //        if(message.getTime()!=null)
 //            holder.timeTv.setText(message.getTime());
 //        else holder.timeTv.setVisibility(View.GONE);
+        holder.description.setOnHyperlinkClickListener(new SocialView.OnClickListener() {
+            @Override
+            public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
+                Toast.makeText(mContext, "Clicked URL", Toast.LENGTH_SHORT).show();
+
+                String url = String.valueOf(text);
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                if (url.startsWith("www")) {
+                    i.setData(Uri.parse("http://" + url));
+                } else {
+                    i.setData(Uri.parse(url));
+                }
+//                startActivity(i);
+                mContext.startActivity(i);
+
+            }
+        });
+
+        holder.description.setOnHashtagClickListener(new SocialView.OnClickListener() {
+            @Override
+            public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
+                Toast.makeText(mContext, "Clicked HashTag", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        holder.description.setOnMentionClickListener(new SocialView.OnClickListener() {
+            @Override
+            public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
+                Toast.makeText(mContext, "Clicked mention", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         holder.like.setOnClickListener(new View.OnClickListener() {
@@ -267,7 +301,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
         public ImageView image_profile, post_image, like, comment, save, more;
 
-        public TextView username, likes, publisher, description, comments, createdAt;
+        public TextView username, likes, publisher, comments, createdAt;
+        public SocialTextView description;
+
 
         public ImageViewHolder(View itemView) {
             super(itemView);
@@ -297,8 +333,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         hashMap.put("text", "liked your post");
         hashMap.put("postid", postid);
         hashMap.put("ispost", true);
+        hashMap.put("time", getCurrentDateTime());
 
         reference.push().setValue(hashMap);
+    }
+
+    private String getCurrentDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy, h:mm a");
+        Calendar c = Calendar.getInstance();
+        String time = sdf.format(c.getTime());
+        return time;
     }
 
     private void deleteNotifications(final String postid, String userid) {
@@ -454,6 +498,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
                         FirebaseDatabase.getInstance().getReference("Posts")
                                 .child(postid).updateChildren(hashMap);
+
+
                     }
                 });
         alertDialog.setNegativeButton("Cancel",
@@ -474,6 +520,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 editText.setText(dataSnapshot.getValue(Post.class).getDescription());
+
             }
 
             @Override

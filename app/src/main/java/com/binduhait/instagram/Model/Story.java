@@ -6,13 +6,15 @@ public class Story {
     private long timeend;
     private String storyid;
     private String userid;
+    private String createTime;
 
-    public Story(String imageurl, long timestart, long timeend, String storyid, String userid) {
+    public Story(String imageurl, long timestart, long timeend, String storyid, String userid,String createTime) {
         this.imageurl = imageurl;
         this.timestart = timestart;
         this.timeend = timeend;
         this.storyid = storyid;
         this.userid = userid;
+        this.createTime = createTime;
     }
 
     public Story() {
@@ -56,5 +58,13 @@ public class Story {
 
     public void setUserid(String userid) {
         this.userid = userid;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 }

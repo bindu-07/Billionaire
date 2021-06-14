@@ -25,7 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -116,11 +118,19 @@ public class CommentsActivity extends AppCompatActivity {
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("userid", firebaseUser.getUid());
-        hashMap.put("text", "commented: "+addcomment.getText().toString());
+        hashMap.put("text", "commented on your post: "+addcomment.getText().toString());
         hashMap.put("postid", postid);
         hashMap.put("ispost", true);
+        hashMap.put("time",getCurrentDateTime());
 
         reference.push().setValue(hashMap);
+    }
+
+    private String getCurrentDateTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy, h:mm a");
+        Calendar c = Calendar.getInstance();
+        String time = sdf.format(c.getTime());
+        return time;
     }
 
     private void getImage(){

@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
 
     private FirebaseUser firebaseUser;
 
-    public UserAdapter(Context context, List<User> users, boolean isFragment){
+    public UserAdapter(Context context, List<User> users, boolean isFragment) {
         mContext = context;
         mUsers = users;
         this.isFragment = isFragment;
@@ -66,7 +68,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         holder.fullname.setText(user.getFullname());
         Glide.with(mContext).load(user.getImageurl()).into(holder.image_profile);
 
-        if (user.getId().equals(firebaseUser.getUid())){
+        if (user.getId().equals(firebaseUser.getUid())) {
             holder.btn_follow.setVisibility(View.GONE);
         }
 
@@ -109,7 +111,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         });
     }
 
-    private void addNotification(String userid){
+    private void addNotification(String userid) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(userid);
 
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -117,8 +119,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         hashMap.put("text", "started following you");
         hashMap.put("postid", "");
         hashMap.put("ispost", false);
+        hashMap.put("time", getCurrentDateTime());
 
         reference.push().setValue(hashMap);
+    }
+
+    private String getCurrentDateTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy, h:mm a");
+        Calendar c = Calendar.getInstance();
+        String time = sdf.format(c.getTime());
+        return time;
     }
 
     @Override
@@ -143,7 +153,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         }
     }
 
-    private void isFollowing(final String userid, final Button button){
+    private void isFollowing(final String userid, final Button button) {
 
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -152,9 +162,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ImageViewHolde
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.child(userid).exists()){
+                if (dataSnapshot.child(userid).exists()) {
                     button.setText("following");
-                } else{
+                } else {
                     button.setText("follow");
                 }
             }

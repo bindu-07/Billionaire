@@ -8,7 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="?android:attr/windowBackground">
 
         <androidx.appcompat.widget.Toolbar
@@ -21,16 +21,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/plus"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/add_creat" />
+
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:src="@drawable/logo3"
+                    android:id="@+id/logo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
-                    android:id="@+id/logo"/>
+                    android:src="@drawable/logoooo" />
+
 
             </RelativeLayout>
-
 
 
         </androidx.appcompat.widget.Toolbar>
@@ -47,18 +54,24 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_story"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler_view_story"
-                android:layout_margin="5dp"
-                android:layout_below="@id/bar"/>
+                android:layout_below="@id/bar"
+                android:layout_margin="5dp" />
 
+            <View
+                android:id="@+id/view"
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gray"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recycler_view"
-                android:layout_below="@id/recycler_view_story"/>
+                android:layout_below="@id/recycler_view_story" />
 
         </LinearLayout>
 
@@ -68,8 +81,7 @@
         android:id="@+id/progress_circular"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:outlineSpotShadowColor="@color/blue"
-        android:outlineAmbientShadowColor="@color/blue"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:progressTint="@color/twitterBlue" />
 
 </RelativeLayout>

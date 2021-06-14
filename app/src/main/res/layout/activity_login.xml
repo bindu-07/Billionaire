@@ -4,50 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"
-    android:gravity="center"
     tools:context=".LoginActivity">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo1"/>
+        android:src="@drawable/logo1" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_background"
-        android:hint="Email"
-        android:id="@+id/email"
-        android:inputType="textEmailAddress"
-        android:layout_marginTop="15dp"
-        android:padding="10dp"/>
+        android:layout_marginTop="25dp"
+        app:hintEnabled="false"
+        android:soundEffectsEnabled="true"
+        app:startIconDrawable="@drawable/ic_twitters_dms_outline">
 
-    <EditText
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Email"
+            android:background="@drawable/edittext_background"
+            android:inputType="textEmailAddress"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_background"
-        android:hint="Password"
-        android:id="@+id/password"
-        android:inputType="textPassword"
+        app:passwordToggleEnabled="true"
         android:layout_marginTop="15dp"
-        android:padding="10dp"/>
+        app:hintEnabled="false"
+        app:startIconDrawable="@drawable/outline_lock_24">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:text="Log in"
-        android:id="@+id/login"
-        android:textColor="@color/colorPrimary"
-        android:background="@drawable/button_background"/>
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <TextView
+        android:id="@+id/forgetpassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Theme.AppCompat.DayNight.Dialog.Alert"
+        android:textSize="16sp"
+        android:layout_marginTop="20dp"
+        android:text="Forget Password? "
+        android:textAlignment="viewEnd"
+        android:textColor="@color/blue"
+         />
+    <Button
+        android:id="@+id/login"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/button_background"
+        android:text="Login"
+        android:textColor="@color/colorPrimary" />
+
+
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Sign up"
-        android:id="@+id/txt_signup"
-        android:layout_marginTop="10dp"/>
+        android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:text="Don't have an account?" />
+        <TextView
+            android:id="@+id/txt_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text=" Sign up" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

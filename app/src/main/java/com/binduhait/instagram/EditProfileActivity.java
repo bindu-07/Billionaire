@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -45,8 +46,8 @@ public class EditProfileActivity extends AppCompatActivity {
     ImageView close;
     CircleImageView image_profile;
     TextView save, tv_change;
-    MaterialEditText fullname, username, bio;
-
+    MaterialEditText fullname, username;
+    SocialAutoCompleteTextView website, bio;
     FirebaseUser firebaseUser;
 
     private Uri mImageUri;
@@ -65,6 +66,7 @@ public class EditProfileActivity extends AppCompatActivity {
         fullname = findViewById(R.id.fullname);
         username = findViewById(R.id.username);
         bio = findViewById(R.id.bio);
+        website = findViewById(R.id.website);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         storageRef = FirebaseStorage.getInstance().getReference("uploads");
@@ -77,6 +79,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 fullname.setText(user.getFullname());
                 username.setText(user.getUsername());
                 bio.setText(user.getBio());
+                website.setText(user.getwebsite());
                 Glide.with(getApplicationContext()).load(user.getImageurl()).into(image_profile);
             }
 
@@ -98,7 +101,8 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 updateProfile(fullname.getText().toString(),
                         username.getText().toString(),
-                        bio.getText().toString());
+                        bio.getText().toString(),
+                       website.getText().toString());
                 finish();
             }
         });
@@ -124,7 +128,7 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void updateProfile(String fullname, String username, String bio){
+    private void updateProfile(String fullname, String username, String bio, String website){
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(firebaseUser.getUid());
 
@@ -132,6 +136,7 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("fullname", fullname);
         map.put("username", username);
         map.put("bio", bio);
+        map.put("website",website);
 
         reference.updateChildren(map);
 
