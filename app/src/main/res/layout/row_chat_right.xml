@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/msglayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/timetv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="255dp"
+        android:layout_marginBottom="8dp"
+        android:text="30 December 06:19PM"
+        android:textColor="@color/colorBlack"
+        android:textSize="13sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profilec"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/profile_image"
+            android:visibility="gone"
+            app:civ_border_color="@null" />
+
+        <com.hendraanggrian.appcompat.widget.SocialTextView
+            android:id="@+id/msgc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/bg_sender"
+            android:padding="15dp"
+            android:paddingEnd="20dp"
+            android:text="His Message"
+            app:hashtagColor="@color/colorPrimary"
+            app:hyperlinkColor="@color/green"
+            app:mentionColor="@color/red"
+            app:socialFlags="hashtag|mention|hyperlink"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/images"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:adjustViewBounds="true"
+            android:background="@drawable/bg_sender"
+            android:maxWidth="300dp"
+            android:maxHeight="300dp"
+            android:padding="5dp"
+
+            android:paddingEnd="15dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_images" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/isSeen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="Delivered"
+        android:textStyle="bold"
+        android:textColor="@color/blue"
+        android:textAlignment="textEnd" />
+</LinearLayout>

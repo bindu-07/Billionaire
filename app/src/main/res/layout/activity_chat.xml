@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChatActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="?android:attr/windowBackground">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profiletv"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_image"
+                app:civ_circle_background_color="@color/colorBlack" />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/nameptv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="HisName"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/onlinetv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Online"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/block"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="5dp"
+                android:visibility="gone"
+                android:src="@drawable/ic_unblock" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/chatlayout"
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profile_image"
+                    app:civ_circle_background_color="@color/colorBlack" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="HisName"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/profile"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="bindu_07 : BondIn"
+                    android:layout_marginTop="2dp"
+                    android:layout_below="@id/name"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp"
+                     />
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chatrecycle"
+                android:layout_width="match_parent"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/chatlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/chat_box"
+        android:layout_margin="8dp"
+        android:paddingHorizontal="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/attachbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/circle_white"
+            android:src="@drawable/gallery"
+            android:padding="5dp"
+            android:layout_marginEnd="5dp"/>
+
+
+
+        <EditText
+            android:id="@+id/messaget"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="Type a message"
+            android:inputType="textCapSentences|textMultiLine"
+            android:padding="15dp" />
+
+        <ImageButton
+            android:id="@+id/sendmsg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/recv_bg_mic"
+            android:src="@drawable/ic_send" />
+
+    </LinearLayout>
+
+</RelativeLayout>

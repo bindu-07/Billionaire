@@ -10,8 +10,11 @@ public class User {
     private String gender;
     private  String website;
     private String birthday;
+    boolean isBlocked;
+    String onlineStatus;
+    String typingTo;
 
-    public User(String id, String username, String fullname, String imageurl, String bio, String gender, String website, String birthday) {
+    public User(String id, String username, String fullname, String imageurl, String bio, String gender, String website, String birthday, boolean isBlocked, String onlineStatus, String typingTo) {
         this.id = id;
         this.username = username;
         this.fullname = fullname;
@@ -20,6 +23,9 @@ public class User {
         this.gender = gender;
         this.website = website;
         this.birthday = birthday;
+        this.isBlocked = isBlocked;
+        this.onlineStatus = onlineStatus;
+        this.typingTo = typingTo;
     }
 
     public User() {
@@ -83,5 +89,30 @@ public class User {
 
     public  void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
+
+    public String getTypingTo() {
+        return typingTo;
+    }
+
+    public void setTypingTo(String typingTo) {
+        this.typingTo = typingTo;
+    }
+
+
+    public boolean isBlocked() {
+        return isBlocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        isBlocked = blocked;
     }
 }

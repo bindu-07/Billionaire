@@ -7,16 +7,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.binduhait.instagram.Model.Post;
@@ -43,10 +47,12 @@ import com.hendraanggrian.appcompat.widget.HashtagArrayAdapter;
 import com.hendraanggrian.appcompat.widget.MentionArrayAdapter;
 import com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView;
 import com.hendraanggrian.appcompat.widget.SocialView;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -60,6 +66,7 @@ public class PostActivity extends AppCompatActivity {
 
     private Uri mImageUri;
     //String miUrlOk = "";
+    //private Uri selectedUri;
     private StorageTask uploadTask;
     StorageReference storageRef;
     String profileid;
@@ -67,22 +74,32 @@ public class PostActivity extends AppCompatActivity {
     ImageView close, image_added;
     TextView post, createdAt;
     ImageView image_profile;
-    ImageView galery, location;
+    VideoView videoView;
+    ImageView galery, video, location;
     SocialAutoCompleteTextView description;
+
+    private static final int PICK_FILE = 1;
+    MediaController mediaController;
+    String type;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
+        mediaController = new MediaController(this);
+
         close = findViewById(R.id.close);
         image_added = findViewById(R.id.image_added);
+        videoView = findViewById(R.id.video_added);
         post = findViewById(R.id.post);
         description = findViewById(R.id.description);
         createdAt = findViewById(R.id.createdAt);
         image_profile = findViewById(R.id.image_profile);
         galery = findViewById(R.id.galery);
         location = findViewById(R.id.location);
+        video = findViewById(R.id.video);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         getImage();
@@ -126,20 +143,26 @@ public class PostActivity extends AppCompatActivity {
         galery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 CropImage.activity()
 //                .setAspectRatio(1,1)
                         .start(PostActivity.this);
             }
         });
-        location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Location Clicked",Toast.LENGTH_SHORT).show();
 
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImage();
             }
         });
 
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "Location Clicked", Toast.LENGTH_SHORT).show();
+
+            }
+        });
 
 
     }
@@ -149,6 +172,14 @@ public class PostActivity extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
+
+    private void chooseImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/* video/*");
+        // intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_FILE);
+    }
+
 
     private void uploadImage_10() {
         final ProgressDialog pd = new ProgressDialog(this);
@@ -201,7 +232,6 @@ public class PostActivity extends AppCompatActivity {
                         }
 
 
-
                         pd.dismiss();
                         startActivity(new Intent(PostActivity.this, MainActivity.class));
                         finish();
@@ -226,22 +256,60 @@ public class PostActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+        if ( requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            mImageUri = result.getUri();
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                mImageUri = result.getUri();
+                image_added.setImageURI(mImageUri);
+                image_added.setVisibility(View.VISIBLE);
+                videoView.setVisibility(View.INVISIBLE);
+                //type = "iv";
 
-            image_added.setImageURI(mImageUri);
-        } else {
+        }  else {
             Toast.makeText(this, "Something gone wrong!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(PostActivity.this, MainActivity.class));
             finish();
         }
     }
 
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//
+//        if (requestCode == PICK_FILE || resultCode == RESULT_OK ||
+//
+//                data != null || data.getData() != null){
+//
+//            mImageUri = data.getData();
+//
+//
+//            if (mImageUri.toString().contains("image")){
+//                Picasso.get().load(mImageUri).into(image_added);
+//
+//                image_added.setImageURI(mImageUri);
+//                image_added.setVisibility(View.VISIBLE);
+//                videoView.setVisibility(View.INVISIBLE);
+//                type = "iv";
+//            }else if (mImageUri.toString().contains("video")){
+//                videoView.setMediaController(mediaController);
+//                videoView.setVisibility(View.VISIBLE);
+//                image_added.setVisibility(View.INVISIBLE);
+//                videoView.setVideoURI(mImageUri);
+//                videoView.start();
+//                type = "vv";
+//            }else {
+//                Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//
+//    }
+
     @Override
     protected void onStart() {
         super.onStart();
+
         final ArrayAdapter<Hashtag> hashtagAdapter = new HashtagArrayAdapter<>(getApplicationContext());
         final ArrayAdapter<Mention> mentionAdapter = new MentionArrayAdapter<>(getApplicationContext());
 
@@ -259,12 +327,18 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users");
+        //User user = new User();
 
-        FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(new ValueEventListener() {
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                    mentionAdapter.add(new Mention(snapshot1.getKey()));
+                    String name = "" + snapshot1.child("fullname").getValue();
+                    String username = "" + snapshot1.child("username").getValue();
+                    String image = "" + snapshot1.child("imageurl").getValue();
+                    mentionAdapter.add(new Mention(username, name, image));
+
                     //mentionAdapter.add(new Mention("Bindu","koko"));
                 }
             }
@@ -288,7 +362,7 @@ public class PostActivity extends AppCompatActivity {
         return time;
     }
 
-    private void getImage(){
+    private void getImage() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
         reference.addValueEventListener(new ValueEventListener() {
             @Override

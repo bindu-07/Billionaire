@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,6 +48,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.hendraanggrian.appcompat.widget.SocialTextView;
 import com.hendraanggrian.appcompat.widget.SocialView;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,12 +63,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
     private Context mContext;
     private List<Post> mPosts;
+    private List<User> mUser;
 
     private FirebaseUser firebaseUser;
 
     public PostAdapter(Context context, List<Post> posts) {
         mContext = context;
         mPosts = posts;
+
 
     }
 
@@ -80,6 +87,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         final Post post = mPosts.get(position);
+
 
 
         Glide.with(mContext).load(post.getPostimage())
@@ -122,7 +130,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
                 } else {
                     i.setData(Uri.parse(url));
                 }
-//                startActivity(i);
+
                 mContext.startActivity(i);
 
             }
@@ -139,6 +147,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             @Override
             public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
                 Toast.makeText(mContext, "Clicked mention", Toast.LENGTH_SHORT).show();
+                String username = String.valueOf(text);
+
+                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
+                editor.putString("profileid", post.getPublisher());
+                editor.apply();
+
+                ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ProfileFragment()).commit();
+
             }
         });
 
@@ -249,6 +266,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             }
         });
 
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.post_image.getDrawable();
+                Bitmap bitmap = bitmapDrawable.getBitmap();
+                shareImageandText(bitmap);
+            }
+        });
+
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -299,7 +325,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView image_profile, post_image, like, comment, save, more;
+        public ImageView image_profile, post_image, like, comment, share, save, more;
 
         public TextView username, likes, publisher, comments, createdAt;
         public SocialTextView description;
@@ -318,6 +344,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
             publisher = itemView.findViewById(R.id.publisher);
             description = itemView.findViewById(R.id.description);
             comments = itemView.findViewById(R.id.comments);
+            share = itemView.findViewById(R.id.share);
             more = itemView.findViewById(R.id.more);
             createdAt = itemView.findViewById(R.id.createdAt);
 
@@ -343,6 +370,35 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ImageViewHolde
         Calendar c = Calendar.getInstance();
         String time = sdf.format(c.getTime());
         return time;
+    }
+
+    private void shareImageandText(Bitmap bitmap) {
+        Uri uri = saveImageToShare(bitmap);
+        //String sharebody= titlee + "\n" + descri;
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        //intent.putExtra(Intent.EXTRA_TEXT,sharebody);
+        //intent.putExtra(Intent.EXTRA_SUBJECT,"Subject Here");
+        intent.setType("image/png");
+        mContext.startActivity(Intent.createChooser(intent, "Share Via"));
+    }
+
+    private Uri saveImageToShare(Bitmap bitmap) {
+        File imagefolder = new File(mContext.getCacheDir(), "images");
+        Uri uri = null;
+        try {
+            imagefolder.mkdirs();
+            File file = new File(imagefolder, "shared_image.png");
+            FileOutputStream outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            uri = FileProvider.getUriForFile(mContext, "com.binduhait.instagram.fileprovider", file);
+        } catch (Exception e) {
+
+            Toast.makeText(mContext, "" + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        return uri;
     }
 
     private void deleteNotifications(final String postid, String userid) {

@@ -21,16 +21,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/search_text"
+                android:background="@drawable/edittext_background"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="5dp"            >
 
                 <ImageView
                     android:id="@+id/ab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
-                    android:src="@drawable/ic_search" />
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_twitter_search_outline" />
 
                 <com.hendraanggrian.appcompat.widget.SocialAutoCompleteTextView
                     android:id="@+id/search_bar"

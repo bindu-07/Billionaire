@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.binduhait.instagram.Adapter.MyFotosAdapter;
+import com.binduhait.instagram.ChatActivity;
 import com.binduhait.instagram.EditProfileActivity;
 import com.binduhait.instagram.FollowersActivity;
 import com.binduhait.instagram.Model.Post;
@@ -57,7 +58,7 @@ public class ProfileFragment extends Fragment {
     ImageView options;
     CircleImageView image_profile;
     TextView posts, followers, following, fullname, username, gender,birthday;
-    Button edit_profile;
+    Button edit_profile , message;
     SocialTextView website, bio;
     private List<String> mySaves;
 
@@ -94,6 +95,7 @@ public class ProfileFragment extends Fragment {
         website = view.findViewById(R.id.websitee);
         birthday = view.findViewById(R.id.birthday);
         edit_profile = view.findViewById(R.id.edit_profile);
+        message = view.findViewById(R.id.messagee);
         username = view.findViewById(R.id.username);
         my_fotos = view.findViewById(R.id.my_fotos);
         saved_fotos = view.findViewById(R.id.saved_fotos);
@@ -126,6 +128,7 @@ public class ProfileFragment extends Fragment {
 
         if (profileid.equals(firebaseUser.getUid())) {
             edit_profile.setText("Edit Profile");
+            message.setVisibility(View.GONE);
         } else {
             checkFollow();
             saved_fotos.setVisibility(View.GONE);
@@ -225,6 +228,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isBlockedOrNot(profileid);
+            }
+        });
+
 
         options.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -308,6 +318,30 @@ public class ProfileFragment extends Fragment {
         Calendar c = Calendar.getInstance();
         String time = sdf.format(c.getTime());
         return time;
+    }
+
+    private void isBlockedOrNot(final String hisUid){
+        DatabaseReference reference= FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseUser.getUid()).child("BlockUsers").orderByChild("id").equalTo(hisUid)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                            if(dataSnapshot1.exists()) {
+                                Toast.makeText(getContext(),"You Can't message ..You are blocked by this User",Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                        }
+                        Intent intent=new Intent(getContext(), ChatActivity.class);
+                        intent.putExtra("uid",hisUid);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     private void userInfo() {

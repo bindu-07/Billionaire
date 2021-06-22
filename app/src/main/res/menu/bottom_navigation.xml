@@ -4,26 +4,35 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/homepage"
-        android:title=""/>
+        android:title="" />
 
     <item
         android:id="@+id/nav_search"
         android:icon="@drawable/search7"
-        android:title=""/>
+        android:title="" />
 
+<!--    <item-->
+<!--        android:id="@+id/nav_add"-->
+<!--        android:icon="@drawable/add"-->
+<!--        android:title=""-->
+<!--        android:visible="false" />-->
     <item
-        android:id="@+id/nav_add"
-        android:icon="@drawable/add"
-        android:visible="false"
-        android:title=""/>
+        android:id="@+id/nav_chat"
+        android:icon="@drawable/messenger1"
+        android:title="" />
+
+<!--    <item-->
+<!--        android:id="@+id/nav_grp_chat"-->
+<!--        android:icon="@drawable/group_chat"-->
+<!--        android:title="" />-->
 
     <item
         android:id="@+id/nav_heart"
         android:icon="@drawable/bell"
-        android:title=""/>
+        android:title="" />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/user"
-        android:title=""/>
+        android:title="" />
 </menu>

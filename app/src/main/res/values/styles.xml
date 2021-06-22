@@ -22,8 +22,29 @@
 
 
     </style>
-    <!-- Style for custom white radio button color -->
 
+    <!-- Base application theme. -->
+    <style name="AppTheme_chat" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/colorWhitesmoke</item>
+        <item name="colorAccent">@color/twitter_blue</item>
+        <item name="android:textColorPrimary">@color/colorBlack</item>
+        <item name="android:actionMenuTextColor">@color/colorBlack</item>
+    </style>
+    <!-- Style for custom white radio button color -->
+    <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
+        <item name="android:textSize">23dp</item>
+        <item name="actionBarSize">35dp</item>
+
+
+        <item name="android:textColor">#3b5998</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="WhiteRadioButton" parent="Theme.AppCompat.Light.DarkActionBar">
 
@@ -44,6 +65,14 @@
 
     <style name="MyDatePicker" parent="@android:style/Widget.Material.DatePicker">
         <item name="android:datePickerMode">spinner</item>
+    </style>
+
+    <style name="Bottomanim">
+
+        <item name="android:windowEnterAnimation">@anim/anim_in</item>
+
+        <item name="android:windowExitAnimation">@anim/anim_out</item>
+
     </style>
 
 </resources>

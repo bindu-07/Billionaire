@@ -40,10 +40,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.7.0'
     implementation 'com.google.firebase:firebase-storage:19.2.2'
     implementation 'com.google.firebase:firebase-functions:19.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.1.5'
+    implementation 'com.google.firebase:firebase-firestore:22.0.0'
+    implementation 'com.firebaseui:firebase-ui-database:6.2.0'
+    implementation 'com.firebase:firebase-client-android:2.5.1'
+
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
     implementation "com.hendraanggrian.appcompat:socialview:0.2"
     implementation "com.hendraanggrian.appcompat:socialview-commons:0.2"
@@ -55,6 +62,17 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.github.shts:StoriesProgressView:3.0.0'
 
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    //appcompat v26+ is higly recommended to support older APIs
+    implementation 'com.devlomi.record-view:record-view:2.0.1'
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.10.8'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.8'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

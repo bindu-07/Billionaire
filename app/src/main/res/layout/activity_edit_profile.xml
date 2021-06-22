@@ -104,7 +104,6 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 app:met_underlineColor="@color/colorBlack"
-
                 app:met_floatingLabel="normal" />
 
             <TextView
@@ -120,7 +119,6 @@
                 android:layout_height="wrap_content"
                 app:met_underlineColor="@color/colorBlack"
                 app:met_iconRight="@drawable/ic_profile"
-
                 app:met_floatingLabel="normal" />
 
             <TextView

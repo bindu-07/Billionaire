@@ -107,14 +107,21 @@
                     android:id="@+id/comment"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="20dp"
                     android:layout_toEndOf="@id/like"
                     android:src="@drawable/ic_twitter_comment" />
 
                 <ImageView
+                    android:id="@+id/share"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/comment"
+                    android:src="@drawable/share1" />
+
+                <ImageView
                     android:id="@+id/save"
                     android:layout_width="30dp"
-
                     android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_savee_black" />
@@ -137,6 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:text="bindu"
+
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
@@ -148,9 +156,11 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:text="hello frends hii"
+                android:textSize="16sp"
+
                 android:textColor="@color/colorBlack"
                 app:hashtagColor="@color/colorPrimary"
-                app:hyperlinkColor="@color/green"
+                app:hyperlinkColor="@color/blue"
                 app:mentionColor="@color/red"
                 app:socialFlags="hashtag|mention|hyperlink" />
 

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GroupInfoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            >
+
+            <ImageView
+                android:id="@+id/grpicons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_groups" />
+
+            <TextView
+                android:id="@+id/grptitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/createdby"
+                android:background="#54000000"
+                android:paddingStart="15dp"
+                android:paddingBottom="5dp"
+                android:text="Title Of the Group"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/createdby"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="#54000000"
+                android:paddingStart="15dp"
+                android:paddingBottom="5dp"
+                android:text="Created By ABC on 10/02/2000"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Description"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.hendraanggrian.appcompat.widget.SocialTextView
+                    android:id="@+id/descri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="well come to the "
+                    android:textColor="@color/colorBlack"
+                    android:textSize="16sp"
+                    app:hashtagColor="@color/colorPrimary"
+                    app:hyperlinkColor="@color/green"
+                    app:mentionColor="@color/red"
+                    app:socialFlags="hashtag|mention|hyperlink" />
+            </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/gray224" />
+        <TextView
+            android:id="@+id/editgrp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/ic_edit_white"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/colorBlack"
+            android:padding="5dp"
+            android:text="Edit Group"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/gray224" />
+
+        <TextView
+            android:id="@+id/addparticipan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/ic_addparticipants"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/colorBlack"
+            android:padding="5dp"
+            android:text="Add Particpants"
+            android:textColor="@color/colorBlack"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/gray224" />
+
+        <TextView
+            android:id="@+id/leavegrp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/ic_delete"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/red"
+            android:padding="5dp"
+            android:text="Leave Group"
+            android:textColor="@color/red"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/gray224" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Encryption"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Messages are end-yo-end encrypted"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp"
+                android:drawableEnd="@drawable/outline_lock_24"
+
+                android:drawableTint="@color/colorBlack"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/totalparticipants"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:drawableStart="@drawable/ic_users"
+            android:drawablePadding="10dp"
+            android:drawableTint="@color/colorBlack"
+            android:padding="5dp"
+            android:textSize="18sp"
+            android:text="Participants(N)"
+            android:textColor="@color/colorBlack" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eee" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/particpantstv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_add_participants" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
